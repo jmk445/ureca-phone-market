@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycom.myapp.shopping.dao.ShoppingDao">
+
+	<select id="listPhonesInCart" resultType="com.mycom.myapp.phone.dto.Phone" parameterType="int">
+		select * 
+		  from phone p,shoppingcart_phone sp 
+		 where sp.shoppingcartid = #{shoppingcartId} 
+		   and sp.phoneid = p.phoneid; 	
+	</select>
+	<select id="getCnt" resultType = "int" parameterType="int">
+		select buyCnt
+		  from shoppingcart_phone
+		 where shoppingcartid = 1
+		   and phoneid = #{phoneid};		  	
+	</select>
+	<insert id="addToCart" parameterType="int">
+		Insert 
+		  into shoppingcart_phone (shoppingcartid, phoneid, buycnt)
+		values (#{cartId},#{phoneId},#{buyCnt})
+		ON DUPLICATE KEY UPDATE buyCnt = #{buyCnt}; 
+	</insert>
+	
+	<update id="updateCart" parameterType="int">
+		update shoppingcart_phone 
+		   set buycnt = #{ updatedCnt}
+		 where shoppingcartid = #{cartId}
+		   and phoneid = #{phoneId}; 	 	
+	</update>
+	
+	<update id="updateRemain" parameterType="int">
+		update phone
+		   set phoneremain = #{updatedRemain}
+		 where phoneid = #{phoneId}
+	</update>
+	
+	<delete id="clearCart">
+		delete 
+		  from shoppingcart_phone	 		 
+	</delete>
+		
+</mapper>    

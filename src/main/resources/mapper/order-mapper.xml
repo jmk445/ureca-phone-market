@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycom.myapp.order.dao.OrderDao">
+
+<select id="listOrders" resultType="com.mycom.myapp.order.dto.Order">
+    SELECT 
+        o.order_id AS OrderId, 
+        o.customer_id AS CustomerId,
+        c.name AS customerName,
+        o.ordertime AS OrderTime,         
+        GROUP_CONCAT(p.phoneName SEPARATOR ', ') AS OrderPhoneString
+    FROM orders o
+    JOIN orders_phone op ON o.order_id = op.order_id
+    JOIN phone p ON op.phone_id = p.phoneid
+    JOIN customer c ON o.customer_id = c.customer_id
+    GROUP BY o.order_id;
+</select>
+
+
+	<select id="getPhoneByOrderId" resultType="String" parameterType="int">
+		SELECT phone_id phoneId 
+		  FROM orders_phone 
+		 WHERE order_id = #{orderId}		 	
+	</select>
+	
+	<insert id="insertOrder" parameterType="int">
+		INSERT 
+		  INTO orders (customer_id, ordertime) 
+		VALUES (#{shoppingCartId}, NOW());
+	</insert>
+	
+	<select id="getOrderId" resultType="int">
+	    SELECT order_id 
+	    FROM orders 
+	    ORDER BY order_id DESC 
+	    LIMIT 1
+	</select>
+
+	
+	<insert id="insertOrder2" parameterType="int">
+		INSERT
+		  into orders_phone (order_id, phone_id)
+		values (#{orderId},#{phoneId})
+	</insert>
+	
+		
+</mapper>    

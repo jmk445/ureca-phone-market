@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycom.myapp.phone.dao.PhoneDao">
+
+	<select id="listPhone" resultType="com.mycom.myapp.phone.dto.Phone">
+		SELECT phoneid phoneId, phoneName phoneName, phoneprice phonePrice, phonemaker phoneMaker, phoneremain phoneRemain 
+		  FROM phone 		 		
+	</select>
+
+	<select id="detailPhone" resultType="com.mycom.myapp.phone.dto.Phone" parameterType="int">
+		SELECT phoneid phoneId, phoneName phoneName, phoneprice phonePrice, phonemaker phoneMaker, phoneremain phoneRemain 
+		  FROM phone 
+		 WHERE phoneid = #{phoneId}		
+	</select>
+	
+	<insert id="insertPhone" parameterType="com.mycom.myapp.phone.dto.Phone">
+		INSERT INTO phone(phoneid, phoneName, phoneprice, Phonemaker, phoneremain) 
+		VALUES (#{phoneId}, #{phoneName} , #{phonePrice}, #{phoneMaker}, #{phoneRemain})		
+	</insert>
+	
+	<update id="updatePhone" parameterType="com.mycom.myapp.phone.dto.Phone">
+		UPDATE phone 
+		   SET phoneName = #{phoneName}, 
+		       phoneprice = #{phonePrice},
+		       phonemaker = #{phoneMaker},
+		       phoneremain = #{phoneRemain}
+		 WHERE phoneid = #{phoneId}		
+	</update>
+	
+	<delete id="deletePhone" parameterType="int">
+		delete from phone where phoneid = #{phoneId}
+	</delete>
+</mapper>    
